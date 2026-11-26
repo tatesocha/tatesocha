@@ -4,43 +4,120 @@ I'm a software builder in Santa Monica. I work on products that take messy conte
 
 ## Selected work
 
+<table>
+<tr>
+<td width="50%" valign="top">
+
 ### Volley
-Turn what you own and what inspires you into complete outfits.
-**Status:** Private beta with 35 active testers
+**Complete outfits from what you already own.**
+
+Turn your wardrobe and your inspiration into outfits you can actually wear.
+
+`Private beta` · `35 active testers`
+
+**How it works**
+- Wardrobe items and inspiration images are embedded and compared by similarity.
+- Ownership, category, and availability are enforced in SQL, so suggestions only use what the user has.
+- The model proposes outfits. Constraints decide what's valid.
+
+**Stack:** `[verify: Postgres + pgvector]` · `[verify: mobile/web client]` · `[verify: vision/embedding model]`
+
+</td>
+<td width="50%" valign="top">
 
 ### Onbrand
-Turn a business's brand context into cohesive, reviewable content packages, so teams spend less time re-explaining the brand and more time creating.
-**Status:** Private beta, working with a design partner.
-*Powered by Carryplane.*
+**Brand context in, cohesive content out.**
+
+Turn a business's brand context into reviewable content packages, so teams spend less time re-explaining the brand and more time creating.
+
+`Private beta` · `Design partner` · `Powered by Carryplane`
+
+**How it works**
+- Only approved brand revisions are retrieved as context.
+- Each package records which context versions it used.
+- Packages go to review before anything is published.
+
+**Stack:** `[verify: Postgres]` · `[verify: LLM provider]` · Carryplane for context lineage
+
+</td>
+</tr>
+<tr>
+<td width="50%" valign="top">
 
 ### The Desk
-Launch a business through coordinated workstreams (engineering, website, marketing, infrastructure), then keep the work aligned as things change.
-**Status:** Private beta. 
-*Powered by Carryplane.*
+**Launch together. Stay aligned.**
+
+Start a business through coordinated workstreams (engineering, website, marketing, infrastructure), then keep the work aligned as things change.
+
+`Private beta` · `Powered by Carryplane`
+
+**How it works**
+- One versioned business definition feeds every workstream.
+- Approvals bind to the exact action, target, and content.
+- When the offer or scope changes, affected work is flagged for review and unaffected work is preserved.
+- State, audit event, and outbox message commit in one transaction.
+
+**Stack:** `[verify: Cloudflare]` · `[verify: Supabase Postgres]` · Carryplane for continuity
+
+</td>
+<td width="50%" valign="top">
 
 ### Portwell
+**Migration prep you can review.**
+
 Prepare for software discontinuations and migrations with evidence-backed, reviewable plans.
-**Status:** Private beta. 
+
+`Private beta`
+
+**How it works**
+- Captures the upstream notice as a versioned source.
+- Maps it to repository exposure, including dependency files and code locations.
+- Produces a migration package with evidence links, open questions, and a verification plan.
+- Flags what to re-review when guidance or the repository changes.
+
+**Stack:** `[verify: repository analysis tooling]` · `[verify: Postgres]`
+
+</td>
+</tr>
+</table>
 
 ## Powered by Carryplane
 
-Carryplane is the internal context and continuity layer behind The Desk and Onbrand. It keeps work connected to the evidence, decisions, and versions it depends on. When something changes, it helps show what needs another look and what still holds.
+Carryplane is the internal context and continuity layer behind Onbrand and The Desk. It isn't a standalone product.
 
-It is not a standalone product.
+```mermaid
+flowchart LR
+    S[Source or brief changes] --> D[Find dependent work]
+    D --> R[Flag what needs review]
+    D --> K[Keep what still holds]
+    R --> A[Approve an exact change]
+    A --> L[(Record: inputs, decision, result)]
+```
 
-## How I build
+| Carryplane records | Why it matters |
+|---|---|
+| Exact source and context versions | Work can be traced to what it was based on |
+| Dependencies between artifacts | Changes show what's affected |
+| Decisions and approvals | Reviewers see what was accepted, and when |
+| Verification results | "Checked" means a specific check ran |
 
-- **Reviewable by default.** AI proposes. People approve.
-- **Evidence over assertion.** Work should show what it was based on.
-- **Honest status.** Each project is labeled with where it actually is.
-- **Practical stack.** Postgres and SQL for state, SVG and Python for generated assets, and AI where it earns its place.
+## Engineering principles
 
-## Elsewhere
+- **AI proposes. People approve.** Models draft, rank, and extract. Authority sits with an approval step.
+- **SQL enforces the rules.** Ownership, status, and permissions live in the database, not in a prompt.
+- **Evidence over assertion.** Output links back to the inputs it used.
+- **Honest status.** Every project shows where it actually is.
 
-[Repositories](https://github.com/tatesocha?tab=repositories)
+<details>
+<summary><b>Example: finding work affected by a change</b></summary>
 
-<!--
-Profile images are generated by the SVG Profile Studio included in this repository.
-Run: python scripts/generate.py
-Project cards, stats, and contribution widgets use only real or clearly unavailable data.
--->
+```sql
+select a.id, a.kind, a.title
+from artifact_consumptions c
+join artifacts a on a.id = c.artifact_id
+where c.source_object_id = :offer_id
+  and c.source_revision_id <> :current_offer_revision
+  and a.status <> 'superseded';
+```
+
+</details>
