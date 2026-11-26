@@ -1,6 +1,6 @@
 ## Hi, I'm Tate 👋
 
-I'm a software builder in Santa Monica. I work on products that take messy context, such as a wardrobe, a brand, a business, or a codebase, and turn it into something coherent and reviewable.
+I'm a software builder in Santa Monica. I work on products that take messy context, such as a wardrobe, a brand, a business, or a codebase, and turn it into something coherent and reviewable. Site: tate.socha.vercel.app
 
 ## Selected work
 
