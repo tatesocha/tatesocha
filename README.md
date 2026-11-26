@@ -1,8 +1,3 @@
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="assets/ink/header.svg" />
-  <img src="assets/paper/header.svg" width="1000" alt="Tate Socha. Ideas into working things. Building useful software in Santa Monica, California." />
-</picture>
-
 ## Hi, I'm Tate 👋
 
 I'm a software builder in Santa Monica. I work on products that take messy context, such as a wardrobe, a brand, a business, or a codebase, and turn it into something coherent and reviewable.
