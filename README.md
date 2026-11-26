@@ -10,17 +10,17 @@ Turn what you own and what inspires you into complete outfits.
 
 ### Onbrand
 Turn a business's brand context into cohesive, reviewable content packages, so teams spend less time re-explaining the brand and more time creating.
-**Status:** Private beta, working with a design partner
+**Status:** Private beta, working with a design partner.
 *Powered by Carryplane.*
 
 ### The Desk
 Launch a business through coordinated workstreams (engineering, website, marketing, infrastructure), then keep the work aligned as things change.
-**Status:** Private beta
+**Status:** Private beta. 
 *Powered by Carryplane.*
 
 ### Portwell
 Prepare for software discontinuations and migrations with evidence-backed, reviewable plans.
-**Status:** Private beta
+**Status:** Private beta. 
 
 ## Powered by Carryplane
 
